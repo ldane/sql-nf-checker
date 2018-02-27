@@ -122,7 +122,7 @@ def check_2nf(my_table, my_cursor):
                         'WHERE c!=1;'
                 execute_statement(my_cursor, query)
                 result_data = my_cursor.fetchall()
-                if result_data[0][0] != 0:
+                if result_data[0][0] == 0:
                     result=False
                     reason.append('%s->%s' %(test_str, nonkey))
     if result:
@@ -133,7 +133,32 @@ def check_2nf(my_table, my_cursor):
 
 def check_3nf(my_table, my_cursor):
     #returns boolean, string
-    return False, ''
+    from itertools import combinations
+    result = True
+    reason = []
+    n = len(my_table.key_list)
+    for nonkey in my_table.nonkey_list:
+        k = my_table.nonkey_list
+        targetkeys = list(my_table.nonkey_list).remove(nonkey)
+        for i in range(1,n):
+            for test_case in combinations(targetkeys, i):
+                test_str=''.join(['%s,' %(j) for j in test_case])[:-1]
+                query = 'SELECT COUNT(*) FROM ' + \
+                        '(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, nonkey) + \
+                        'as c FROM %s ' %(my_table.table_name) + \
+                        'WHERE %s is NOT NULL ' %(nonkey) + \
+                        'GROUP BY %s) as t ' %(test_str) + \
+                        'WHERE c!=1;'
+                execute_statement(my_cursor, query)
+                result_data = my_cursor.fetchall()
+                if result_data[0][0] != 0:
+                    result=False
+                    reason.append('%s->%s' %(test_str, nonkey))
+    if result:
+        reason=''
+    else:
+        reason = ','.join(reason)
+    return result, reason
 
 def check_bcnf(my_table, my_cursor):
     #returns boolean, string
