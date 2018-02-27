@@ -105,9 +105,9 @@ def check_2nf(my_table, my_cursor):
     from itertools import combinations
     n = len(my_table.key_list)
     for nonkey in my_table.nonkey_list:
-        for i in range(1,n-1):
+        for i in range(1,n):
             for test_case in combinations(my_table.key_list, i):
-                test_str=''.join(['%d,' %(j) for j in test_case])[:-1]
+                test_str=''.join(['%s,' %(j) for j in test_case])[:-1]
                 query = 'SELECT COUNT(*) FROM ' + \
                         '(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, nonkey) + \
                         'as c FROM %s ' %(my_table.table_name) + \
@@ -116,7 +116,7 @@ def check_2nf(my_table, my_cursor):
                         'WHERE c!=1;'
                 execute_statement(my_cursor, query)
                 result_data = my_cursor.fetchall()
-                if row[0][0] != 0:
+                if result_data[0][0] != 0:
                     string_reason = '%s -> %s' %(my_table.table_name, test_str)
                     return False, string_reason
     return True, ''
