@@ -151,6 +151,8 @@ def main():
 		#print(row[0])
 	return_data = cur.fetchall()
 	print return_data[0]
+	print return_data[0][0]
+	print return_data[0]['total']
 	
 if __name__ == "__main__":
 	main()
