@@ -1,0 +1,4 @@
+Employees(emp_id(k),emp_name(k),emp_address,emp_mobile)
+Teachers(teacher_id(k),subject(k),teacher_age)
+Winners(tournament(k), year(k),winner,origin)
+Books(title(k), genre, num_of_books)
