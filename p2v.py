@@ -51,7 +51,6 @@ class Table:
         return True
 
 def check_nf(my_table, my_cursor):
-<<<<<<< HEAD
     #returns a list of booleans representing normal form checks and a string describing the reason for failure
     #[1nf, 2nf, 3nf, bcnf], 'reason'
 
@@ -66,30 +65,9 @@ def check_nf(my_table, my_cursor):
                 is_bcnf, reason = check_bcnf(my_table, my_cursor)
     #testing
     return [is_1nf, is_2nf, is_3nf, is_bcnf], reason
-
-def check_1nf(my_table, my_cursor):
-    #returns boolean, string
-
-    #check if any null values in the supposed primary key columns (composite)
-    return False, ''
-=======
-	#returns a list of booleans representing normal form checks and a string describing the reason for failure
-	#[1nf, 2nf, 3nf, bcnf], 'reason'
-	
-	is_1nf, is_2nf, is_3nf, is_bcnf = False, False, False, False
-	reason = ''
-	is_1nf, reason = check_1nf(my_table, my_cursor)
-	if is_1nf:
-		is_2nf, reason = check_2nf(my_table, my_cursor)
-		if is_2nf:
-			is_3nf, reason = check_3nf(my_table, my_cursor)
-			if is_3nf:
-				is_bcnf, reason = check_bcnf(my_table, my_cursor)
-	# testing
-	return [is_1nf, is_2nf, is_3nf, is_bcnf], reason
 	
 def check_1nf(my_table, my_cursor):
-	#r eturns boolean, string
+	# returns boolean, string
 	
 	# check if any null values in the supposed primary key columns (composite)
 	for key in my_table.key_list:
@@ -120,7 +98,6 @@ def check_1nf(my_table, my_cursor):
 			string_reason = 'DUPLICATE KEY in ' + keys_clause
 			return False, string_reason
 	return True, ''
->>>>>>> test
 
 def check_2nf(my_table, my_cursor):
     #returns boolean, string
@@ -135,19 +112,6 @@ def check_bcnf(my_table, my_cursor):
     return False, ''
 
 def execute_statement(my_cursor, my_statement):
-<<<<<<< HEAD
-    # executes sql statement and writes to file
-    my_cursor.execute(my_statement)
-
-    # before writing to file, separate the statement's WHERE JOIN GROUP clause.
-    statement1 = my_statement.replace('WHERE', '\nWHERE')
-    statement2 = statement1.replace('GROUP', '\nGROUP')
-    statement3 = statement2.replace('INNER JOIN', '\nINNER JOIN')
-
-    with open ('NF.sql', 'a') as f_sql:
-        f_sql.write(statement3 + '\n\n')
-
-=======
 	# executes sql statement and writes to file
 	my_cursor.execute(my_statement)
 	
@@ -159,7 +123,6 @@ def execute_statement(my_cursor, my_statement):
 	with open ('NF.sql', 'a') as f_sql:
 		f_sql.write(statement3 + '\n\n')
 		
->>>>>>> test
 def print_row(my_table_name, nf_boolean_list, my_reason):
     #first print table name, then print which NF fails if any, if there is a failure then the myReason string is not empty
     failed = 'PASSED'
@@ -177,58 +140,6 @@ def print_row(my_table_name, nf_boolean_list, my_reason):
         print(my_table_name + '\t' + failed + '\t\t' + my_reason)
 
 def main():
-<<<<<<< HEAD
-    # file login.ini contains host, username, password, and db name
-    with open('login.ini', 'r') as f:
-        host = f.readline().strip()
-        username = f.readline().strip()
-        password = f.readline().strip()
-        database = f.readline().strip()
-
-    conn_info = {'host': host,
-                     'port': 5433,
-                     'user': username,
-                     'password': password,
-                     'database': database,
-                     'read_timeout': 600,
-                     'connection_timeout': 5}
-
-
-    # clear the log files
-    open ('NF.sql', 'w').close()
-
-    # grab input from command line argument
-    # only 1 argument allowed
-    if len(sys.argv) != 2:
-        return
-    # argument should be name of text file that is input 
-    lines = [line.rstrip('\n') for line in open(sys.argv[1])]
-
-    # connect to database
-    connection = vertica_python.connect(**conn_info)
-    cur = connection.cursor()
-
-    print('#Table\t\tFailed\t\tReason')
-
-    # from the schema, evaluate each line into the table class which forms a key and non key list
-    for line in lines:
-        temp_table = Table(line)
-        if (temp_table.check_name_validity()):
-            #table names are valid, now check normal form
-            normal_forms, reason = check_nf(temp_table, cur)
-            print_row(temp_table.table_name, normal_forms, reason)
-
-    #dataset = 'Employees'
-
-    stm = 'SELECT distinct teacher_id, COUNT(DISTINCT teacher_age) AS ca FROM Teachers WHERE teacher_age IS NOT NULL GROUP BY teacher_id;'
-
-    #cur.execute(stm)
-    execute_statement(cur, stm)
-
-    for row in cur.iterate():
-        print(row)
-
-=======
 	# file login.ini contains host, username, password, and db name
 	with open('login.ini', 'r') as f:
 		host = f.readline().strip()
@@ -280,8 +191,7 @@ def main():
 	#return_data = cur.fetchall()
 	#print return_data[0]
 	#print return_data[0][0]
-	
->>>>>>> test
+
 if __name__ == "__main__":
     main()
 
