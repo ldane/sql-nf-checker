@@ -71,6 +71,7 @@ def check_1nf(my_table, my_cursor):
     # returns False, 'reason' if fails 1NF check, string will contain reason for failure ie 'duplicate keys' 'null in key'
 
     # check if any null values in the supposed primary key columns (composite)
+	string_reason = ''
     for key in my_table.key_list:
         statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + ' WHERE ' + key + ' IS NULL'
         execute_statement(my_cursor, statement)
@@ -79,8 +80,9 @@ def check_1nf(my_table, my_cursor):
         #for row in result_data:
             #print(row)
         if result_data[0][0] > 0:
-            string_reason = 'NULL in ' + key
-            return False, string_reason
+			if string_reason != '':
+				string_reason += ', '
+            string_reason += 'NULL in ' + key
 
     # check if key has duplicates
     keys_clause = ''
@@ -96,9 +98,11 @@ def check_1nf(my_table, my_cursor):
         #print(row)
     for row in result_data:
         if row[0] > 1:
-            string_reason = 'DUPLICATE KEY in ' + keys_clause
-            return False, string_reason
-    return True, ''
+            string_reason += 'DUPLICATE KEY in ' + keys_clause
+	if string_reason != '':
+		return False, string_reason
+	else:
+		return True, ''
 
 def check_2nf(my_table, my_cursor):
     #returns boolean, string
