@@ -142,7 +142,7 @@ def main():
 
 	#dataset = 'Employees'
 
-	stm = 'SELECT distinct teacher_id, COUNT(DISTINCT teacher_age) AS ca FROM Teachers WHERE teacher_age IS NOT NULL GROUP BY teacher_id;'
+	stm = 'SELECT SUM(ca) AS total FROM (SELECT distinct teacher_id, COUNT(DISTINCT teacher_age) AS ca FROM Teachers WHERE teacher_age IS NOT NULL GROUP BY teacher_id) as dTable;'
 
 	#cur.execute(stm)
 	execute_statement(cur, stm)
