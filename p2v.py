@@ -63,7 +63,7 @@ def check_1nf(my_table, my_cursor):
 		result_data = my_cursor.fetchall()
 		for row in result_data:
 			print(row)
-		if result_data[0][0] > 0:
+		if result_data[0][0] > -1:
 			string_reason = 'NULL in ' + key + ' found'
 			return False, string_reason
 			
