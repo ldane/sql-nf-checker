@@ -67,7 +67,8 @@ def check_nf(my_table, my_cursor):
     return [is_1nf, is_2nf, is_3nf, is_bcnf], reason
 	
 def check_1nf(my_table, my_cursor):
-	# returns boolean, string
+	# returns True, '' if passes 1NF check
+	# returns False, 'reason' if fails 1NF check, string will contain reason for failure ie 'duplicate keys' 'null in key'
 	
 	# check if any null values in the supposed primary key columns (composite)
 	for key in my_table.key_list:
