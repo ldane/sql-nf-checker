@@ -142,13 +142,13 @@ def main():
 
 	#dataset = 'Employees'
 
-	#stm = 'SELECT * FROM ' + dataset
+	stm = 'SELECT distinct teacher_id, COUNT(DISTINCT teacher_age) AS ca FROM Teachers WHERE teacher_age IS NOT NULL GROUP BY teacher_id;'
 
 	#cur.execute(stm)
-	#executeStatement(cur, stm)
+	executeStatement(cur, stm)
 
-	#for row in cur.iterate():
-		#print(row)
+	for row in cur.iterate():
+		print(row)
 	
 if __name__ == "__main__":
 	main()
