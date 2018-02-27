@@ -137,7 +137,7 @@ def check_3nf(my_table, my_cursor):
     result = True
     reason = []
     targetkeys = list(my_table.nonkey_list)
-    while not targetkeys:
+    while targetkeys:
         nonkey = targetkeys.pop(0)
         n = len(targetkeys)
         for i in range(1,n+1):
