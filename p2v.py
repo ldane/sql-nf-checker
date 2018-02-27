@@ -50,24 +50,40 @@ def check_nf(my_table, my_cursor):
 			is_3nf, reason = check_3nf(my_table, my_cursor)
 			if is_3nf:
 				is_bcnf, reason = check_bcnf(my_table, my_cursor)
-	#testing
+	# testing
 	return [is_1nf, is_2nf, is_3nf, is_bcnf], reason
 	
 def check_1nf(my_table, my_cursor):
-	#returns boolean, string
+	#r eturns boolean, string
 	
-	#check if any null values in the supposed primary key columns (composite)
+	# check if any null values in the supposed primary key columns (composite)
 	for key in my_table.key_list:
 		statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + ' WHERE ' + key + ' IS NULL'
 		execute_statement(my_cursor, statement)
 		result_data = my_cursor.fetchall()
-		for row in result_data:
-			print(row)
+		#testing return from query
+		#for row in result_data:
+			#print(row)
 		if result_data[0][0] > 0:
-			string_reason = 'NULL in ' + key + ' found'
+			string_reason = 'NULL in ' + key
 			return False, string_reason
 			
-	#check if key has duplicates
+	# check if key has duplicates
+	keys_clause = ''
+	for key in my_table.key_list:
+		if keys_clause != '':
+			keys_clause += ', '
+		keys_clause += key
+	statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + ' GROUP BY ' + 
+	execute_statement(my_cursor, statement)
+	result_data = my_cursor.fetchall()
+	# testing return from query
+	for row in result_data:
+		print(row)
+	for row in result_data:
+		if row[0] > 1:
+			string_reason 'DUPLICATE KEY in ' + keys_clause
+			return False, string_reason
 	return True, ''
 
 def check_2nf(my_table, my_cursor):
@@ -87,9 +103,9 @@ def execute_statement(my_cursor, my_statement):
 	my_cursor.execute(my_statement)
 	
 	# before writing to file, separate the statement's WHERE JOIN GROUP clause.
-	statement1 = my_statement.replace('WHERE', '\nWHERE')
-	statement2 = statement1.replace('GROUP', '\nGROUP')
-	statement3 = statement2.replace('INNER JOIN', '\nINNER JOIN')
+	statement1 = my_statement.replace('WHERE', '\n\tWHERE')
+	statement2 = statement1.replace('GROUP', '\n\tGROUP')
+	statement3 = statement2.replace('INNER JOIN', '\n\tINNER JOIN')
 	
 	with open ('NF.sql', 'a') as f_sql:
 		f_sql.write(statement3 + '\n\n')
