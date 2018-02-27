@@ -61,6 +61,8 @@ def check_1nf(my_table, my_cursor):
 		statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + ' WHERE ' + key + ' IS NULL'
 		execute_statement(my_cursor, statement)
 		result_data = my_cursor.fetchall()
+		for row in result_data:
+			print(row)
 		if result_data[0][0] > 0:
 			string_reason = 'NULL in ' + key + ' found'
 			return False, string_reason
