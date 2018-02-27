@@ -57,8 +57,16 @@ def check_1nf(my_table, my_cursor):
 	#returns boolean, string
 	
 	#check if any null values in the supposed primary key columns (composite)
-	
-	return False, ''
+	for key in my_table.key_list:
+		statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + ' WHERE ' key ' IS NULL'
+		execute_statement(my_cursor, statement)
+		result_data = my_cursor.fetchall()
+		if result_data[0][0] > 0:
+			string_reason = 'NULL in ' + key + ' found'
+			return False, string_reason
+			
+	#check if key has duplicates
+	return True, ''
 
 def check_2nf(my_table, my_cursor):
 	#returns boolean, string
