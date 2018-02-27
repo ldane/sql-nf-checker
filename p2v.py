@@ -104,7 +104,7 @@ def check_2nf(my_table, my_cursor):
     #returns boolean, string
     from itertools import combinations
     result = True
-    reason = ''
+    reason = []
     n = len(my_table.key_list)
     for nonkey in my_table.nonkey_list:
         for i in range(1,n):
@@ -122,6 +122,10 @@ def check_2nf(my_table, my_cursor):
                     result=False
                     string_reason = '%s->%s' %(test_str, nonkey)
                     reason = reason + ',' +string_reason
+    if result:
+        reason=''
+    else:
+        reason = ','.join(reason)
     return result, reason
 
 def check_3nf(my_table, my_cursor):
