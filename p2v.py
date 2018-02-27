@@ -120,8 +120,7 @@ def check_2nf(my_table, my_cursor):
                 result_data = my_cursor.fetchall()
                 if result_data[0][0] != 0:
                     result=False
-                    string_reason = '%s->%s' %(test_str, nonkey)
-                    reason = reason + ',' +string_reason
+                    reason.append('%s->%s' %(test_str, nonkey))
     if result:
         reason=''
     else:
