@@ -80,8 +80,8 @@ def check_1nf(my_table, my_cursor):
         #for row in result_data:
             #print(row)
         if result_data[0][0] > 0:
-			if string_reason != '':
-				string_reason += ', '
+            if string_reason != '':
+                string_reason += ', '
             string_reason += 'NULL in ' + key
 
     # check if key has duplicates
@@ -99,10 +99,10 @@ def check_1nf(my_table, my_cursor):
     for row in result_data:
         if row[0] > 1:
             string_reason += 'DUPLICATE KEY in ' + keys_clause
-	if string_reason != '':
-		return False, string_reason
-	else:
-		return True, ''
+    if string_reason != '':
+        return False, string_reason
+    else:
+        return True, ''
 
 def check_2nf(my_table, my_cursor):
     #returns boolean, string
