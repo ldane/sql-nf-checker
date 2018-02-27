@@ -116,7 +116,7 @@ def check_2nf(my_table, my_cursor):
                         'WHERE c!=1;'
                 execute_statement(my_cursor, query)
                 result_data = my_cursor.fetchall()
-                if row[0][0] ! = 0:
+                if row[0][0] != 0:
                     string_reason = '%s -> %s' %(my_table.name, test_str)
                     return False, string_reason
     return True, ''
