@@ -110,14 +110,14 @@ def check_2nf(my_table, my_cursor):
                 test_str=''.join(['%d,' %(j) for j in test_case])[:-1]
                 query = 'SELECT COUNT(*) FROM ' + \
                         '(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, nonkey) + \
-                        'as c FROM %s ' %(my_table.name) + \
+                        'as c FROM %s ' %(my_table.table_name) + \
                         'WHERE %s is NOT NULL' %(nonkey) + \
                         'GROUP BY %s) as t' %(test_str) + \
                         'WHERE c!=1;'
                 execute_statement(my_cursor, query)
                 result_data = my_cursor.fetchall()
                 if row[0][0] != 0:
-                    string_reason = '%s -> %s' %(my_table.name, test_str)
+                    string_reason = '%s -> %s' %(my_table.table_name, test_str)
                     return False, string_reason
     return True, ''
 
