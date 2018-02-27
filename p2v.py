@@ -147,8 +147,10 @@ def main():
 	#cur.execute(stm)
 	execute_statement(cur, stm)
 
-	for row in cur.iterate():
-		print(row[0])
+	#for row in cur.iterate():
+		#print(row[0])
+	return_data = cur.fetchall()
+	print return_data[0]
 	
 if __name__ == "__main__":
 	main()
