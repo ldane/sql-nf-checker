@@ -152,7 +152,7 @@ def main():
 	return_data = cur.fetchall()
 	print return_data[0]
 	print return_data[0][0]
-	print return_data[0]['total']
+	print return_data['total']
 	
 if __name__ == "__main__":
 	main()
