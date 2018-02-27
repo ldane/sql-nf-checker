@@ -139,7 +139,8 @@ def check_3nf(my_table, my_cursor):
     n = len(my_table.key_list)
     for nonkey in my_table.nonkey_list:
         k = my_table.nonkey_list
-        targetkeys = list(my_table.nonkey_list).remove(nonkey)
+        targetkeys = list(my_table.nonkey_list)
+        targetkeys.remove(nonkey)
         for i in range(1,n):
             for test_case in combinations(targetkeys, i):
                 test_str=''.join(['%s,' %(j) for j in test_case])[:-1]
