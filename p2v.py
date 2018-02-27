@@ -65,44 +65,61 @@ def check_nf(my_table, my_cursor):
                 is_bcnf, reason = check_bcnf(my_table, my_cursor)
     #testing
     return [is_1nf, is_2nf, is_3nf, is_bcnf], reason
-	
+
 def check_1nf(my_table, my_cursor):
-	# returns True, '' if passes 1NF check
-	# returns False, 'reason' if fails 1NF check, string will contain reason for failure ie 'duplicate keys' 'null in key'
-	
-	# check if any null values in the supposed primary key columns (composite)
-	for key in my_table.key_list:
-		statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + ' WHERE ' + key + ' IS NULL'
-		execute_statement(my_cursor, statement)
-		result_data = my_cursor.fetchall()
-		#testing return from query
-		#for row in result_data:
-			#print(row)
-		if result_data[0][0] > 0:
-			string_reason = 'NULL in ' + key
-			return False, string_reason
-			
-	# check if key has duplicates
-	keys_clause = ''
-	for key in my_table.key_list:
-		if keys_clause != '':
-			keys_clause += ', '
-		keys_clause += key
-	statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + ' GROUP BY ' + keys_clause
-	execute_statement(my_cursor, statement)
-	result_data = my_cursor.fetchall()
-	# testing return from query
-	#for row in result_data:
-		#print(row)
-	for row in result_data:
-		if row[0] > 1:
-			string_reason = 'DUPLICATE KEY in ' + keys_clause
-			return False, string_reason
-	return True, ''
+    # returns True, '' if passes 1NF check
+    # returns False, 'reason' if fails 1NF check, string will contain reason for failure ie 'duplicate keys' 'null in key'
+
+    # check if any null values in the supposed primary key columns (composite)
+    for key in my_table.key_list:
+        statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + ' WHERE ' + key + ' IS NULL'
+        execute_statement(my_cursor, statement)
+        result_data = my_cursor.fetchall()
+        #testing return from query
+        #for row in result_data:
+            #print(row)
+        if result_data[0][0] > 0:
+            string_reason = 'NULL in ' + key
+            return False, string_reason
+
+    # check if key has duplicates
+    keys_clause = ''
+    for key in my_table.key_list:
+        if keys_clause != '':
+            keys_clause += ', '
+        keys_clause += key
+    statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + ' GROUP BY ' + keys_clause
+    execute_statement(my_cursor, statement)
+    result_data = my_cursor.fetchall()
+    # testing return from query
+    #for row in result_data:
+        #print(row)
+    for row in result_data:
+        if row[0] > 1:
+            string_reason = 'DUPLICATE KEY in ' + keys_clause
+            return False, string_reason
+    return True, ''
 
 def check_2nf(my_table, my_cursor):
     #returns boolean, string
-    return False, ''
+    from itertools import combinations
+    n = len(my_table.key_list)
+    for nonkey in mytable.nonkey_list:
+        for i in range(n-1):
+            for test_case in combinations(my_table.key_list, i):
+                test_str=''.join(['%d,' %(j) for j in i])[:-1]
+                query = 'SELECT COUNT(*) FROM ' + \
+                        '(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, nonkey) + \
+                        'as c FROM %s ' %(my_table.name) + \
+                        'WHERE %s is NOT NULL' %(nonkey) + \
+                        'GROUP BY %s) as t' %(test_str) + \
+                        'WHERE c!=1;'
+                execute_statement(my_cursor, query)
+                result_data = my_cursor.fetchall()
+                if row[0][0] ! = 0:
+                    string_reason = '%s -> %s' %(my_table.name, test_str)
+                    return False, string_reason
+    return True, ''
 
 def check_3nf(my_table, my_cursor):
     #returns boolean, string
@@ -113,17 +130,17 @@ def check_bcnf(my_table, my_cursor):
     return False, ''
 
 def execute_statement(my_cursor, my_statement):
-	# executes sql statement and writes to file
-	my_cursor.execute(my_statement)
-	
-	# before writing to file, separate the statement's WHERE JOIN GROUP clause.
-	statement1 = my_statement.replace('WHERE', '\n\tWHERE')
-	statement2 = statement1.replace('GROUP', '\n\tGROUP')
-	statement3 = statement2.replace('INNER JOIN', '\n\tINNER JOIN')
-	
-	with open ('NF.sql', 'a') as f_sql:
-		f_sql.write(statement3 + '\n\n')
-		
+    # executes sql statement and writes to file
+    my_cursor.execute(my_statement)
+
+    # before writing to file, separate the statement's WHERE JOIN GROUP clause.
+    statement1 = my_statement.replace('WHERE', '\n\tWHERE')
+    statement2 = statement1.replace('GROUP', '\n\tGROUP')
+    statement3 = statement2.replace('INNER JOIN', '\n\tINNER JOIN')
+
+    with open ('NF.sql', 'a') as f_sql:
+        f_sql.write(statement3 + '\n\n')
+
 def print_row(my_table_name, nf_boolean_list, my_reason):
     #first print table name, then print which NF fails if any, if there is a failure then the myReason string is not empty
     failed = 'PASSED'
@@ -141,58 +158,58 @@ def print_row(my_table_name, nf_boolean_list, my_reason):
         print(my_table_name + '\t' + failed + '\t\t' + my_reason)
 
 def main():
-	# file login.ini contains host, username, password, and db name
-	with open('login.ini', 'r') as f:
-		host = f.readline().strip()
-		username = f.readline().strip()
-		password = f.readline().strip()
-		database = f.readline().strip()
+    # file login.ini contains host, username, password, and db name
+    with open('login.ini', 'r') as f:
+        host = f.readline().strip()
+        username = f.readline().strip()
+        password = f.readline().strip()
+        database = f.readline().strip()
 
-	conn_info = {'host': host,
-				 'port': 5433,
-				 'user': username,
-				 'password': password,
-				 'database': database,
-				 'read_timeout': 600,
-				 'connection_timeout': 5}
+    conn_info = {'host': host,
+                 'port': 5433,
+                 'user': username,
+                 'password': password,
+                 'database': database,
+                 'read_timeout': 600,
+                 'connection_timeout': 5}
 
-				 
-	# clear the log files
-	open ('NF.sql', 'w').close()
-	
-	# grab input from command line argument
-	# only 1 argument allowed
-	if len(sys.argv) != 2:
-		return
-	# python call should be 'python p2v.py database=something.txt'
-	descriptor, db_file_name = sys.argv[1].split('=')
-	lines = [line.rstrip('\n') for line in open(db_file_name)]
-	
-	# connect to database
-	connection = vertica_python.connect(**conn_info)
-	cur = connection.cursor()
-	
-	print('#Table\t\tFailed\t\tReason')
-	
-	# from the schema, evaluate each line into the table class which forms a key and non key list
-	for line in lines:
-		temp_table = Table(line)
-		if (temp_table.check_name_validity()):
-			#table names are valid, now check normal form
-			normal_forms, reason = check_nf(temp_table, cur)
-			print_row(temp_table.table_name, normal_forms, reason)
 
-	#dataset = 'Employees'
-	#stm = 'SELECT * FROM Employees'
-	#cur.execute(stm)
-	#execute_statement(cur, stm)
+    # clear the log files
+    open ('NF.sql', 'w').close()
 
-	#for row in cur.iterate():
-		#print(row)
-		
-	#return_data = cur.fetchall()
-	#print return_data[0]
-	#print return_data[0][0]
+    # grab input from command line argument
+    # only 1 argument allowed
+    if len(sys.argv) != 2:
+        return
+    # python call should be 'python p2v.py database=something.txt'
+    descriptor, db_file_name = sys.argv[1].split('=')
+    lines = [line.rstrip('\n') for line in open(db_file_name)]
+
+    # connect to database
+    connection = vertica_python.connect(**conn_info)
+    cur = connection.cursor()
+
+    print('#Table\t\tFailed\t\tReason')
+
+    # from the schema, evaluate each line into the table class which forms a key and non key list
+    for line in lines:
+        temp_table = Table(line)
+        if (temp_table.check_name_validity()):
+            #table names are valid, now check normal form
+            normal_forms, reason = check_nf(temp_table, cur)
+            print_row(temp_table.table_name, normal_forms, reason)
+
+    #dataset = 'Employees'
+    #stm = 'SELECT * FROM Employees'
+    #cur.execute(stm)
+    #execute_statement(cur, stm)
+
+    #for row in cur.iterate():
+        #print(row)
+
+    #return_data = cur.fetchall()
+    #print return_data[0]
+    #print return_data[0][0]
 
 if __name__ == "__main__":
     main()
