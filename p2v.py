@@ -168,12 +168,12 @@ def main():
 			print_row(temp_table.table_name, normal_forms, reason)
 
 	#dataset = 'Employees'
-	stm = 'SELECT * FROM Employees'
-	cur.execute(stm)
-	execute_statement(cur, stm)
+	#stm = 'SELECT * FROM Employees'
+	#cur.execute(stm)
+	#execute_statement(cur, stm)
 
-	for row in cur.iterate():
-		print(row)
+	#for row in cur.iterate():
+		#print(row)
 		
 	#return_data = cur.fetchall()
 	#print return_data[0]
