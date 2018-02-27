@@ -152,7 +152,7 @@ def check_3nf(my_table, my_cursor):
                         'WHERE c!=1;'
                 execute_statement(my_cursor, query)
                 result_data = my_cursor.fetchall()
-                if result_data[0][0] != 0:
+                if result_data[0][0] == 0:
                     result=False
                     reason.append('%s->%s' %(test_str, nonkey))
     if result:
