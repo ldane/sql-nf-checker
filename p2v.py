@@ -58,7 +58,7 @@ def check_1nf(my_table, my_cursor):
 	
 	#check if any null values in the supposed primary key columns (composite)
 	for key in my_table.key_list:
-		statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + ' WHERE ' key ' IS NULL'
+		statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + ' WHERE ' + key + ' IS NULL'
 		execute_statement(my_cursor, statement)
 		result_data = my_cursor.fetchall()
 		if result_data[0][0] > 0:
