@@ -164,8 +164,9 @@ def main():
 	# only 1 argument allowed
 	if len(sys.argv) != 2:
 		return
-	# argument should be name of text file that is input 
-	lines = [line.rstrip('\n') for line in open(sys.argv[1])]
+	# python call should be 'python p2v.py database=something.txt'
+	descriptor, db_file_name = sys.argv[1].split('=')
+	lines = [line.rstrip('\n') for line in open(db_file_name)]
 	
 	# connect to database
 	connection = vertica_python.connect(**conn_info)
