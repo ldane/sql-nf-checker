@@ -74,7 +74,7 @@ def check_1nf(my_table, my_cursor):
 		if keys_clause != '':
 			keys_clause += ', '
 		keys_clause += key
-	statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + ' GROUP BY ' + 
+	statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + ' GROUP BY ' + keys_clause
 	execute_statement(my_cursor, statement)
 	result_data = my_cursor.fetchall()
 	# testing return from query
