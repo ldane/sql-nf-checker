@@ -148,7 +148,7 @@ def main():
 	execute_statement(cur, stm)
 
 	for row in cur.iterate():
-		print(row)
+		print(row[0])
 	
 if __name__ == "__main__":
 	main()
