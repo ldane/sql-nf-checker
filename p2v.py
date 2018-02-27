@@ -57,6 +57,7 @@ def check_1nf(my_table, my_cursor):
 	#returns boolean, string
 	
 	#check if any null values in the supposed primary key columns (composite)
+	
 	return False, ''
 
 def check_2nf(my_table, my_cursor):
@@ -141,18 +142,16 @@ def main():
 			print_row(temp_table.table_name, normal_forms, reason)
 
 	#dataset = 'Employees'
-
-	stm = 'SELECT SUM(ca) AS total FROM (SELECT distinct teacher_id, COUNT(DISTINCT teacher_age) AS ca FROM Teachers WHERE teacher_age IS NOT NULL GROUP BY teacher_id) as dTable;'
-
+	#stm = 
 	#cur.execute(stm)
-	execute_statement(cur, stm)
+	#execute_statement(cur, stm)
 
 	#for row in cur.iterate():
 		#print(row[0])
-	return_data = cur.fetchall()
-	print return_data[0]
-	print return_data[0][0]
-	print return_data['total']
+		
+	#return_data = cur.fetchall()
+	#print return_data[0]
+	#print return_data[0][0]
 	
 if __name__ == "__main__":
 	main()
