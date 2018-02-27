@@ -33,10 +33,21 @@ class Table:
 			else:
 				self.nonkey_list.append(col_stripped)
 
+    def _string_check(self, target):
+        import string
+        charset = string.ascii_letters+'_'
+        for c in set(target):
+            if c not in charset:
+                return False
+        return True
+
 	# check for anomalies in names 
 	def check_name_validity(self):
 		#return true if all names valid table/column names
 		#returns false if table breaks some standard format
+        for i in [self.table_name] + self.key_list + self.nonkey_list:
+            if not _string_check(i):
+                return False
 		return True
 
 def check_nf(my_table, my_cursor):
