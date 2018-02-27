@@ -140,7 +140,7 @@ def check_3nf(my_table, my_cursor):
     while not targetkeys:
         nonkey = targetkeys.pop(0)
         n = len(targetkeys)
-        for i in range(1,n):
+        for i in range(1,n+1):
             for test_case in combinations(targetkeys, i):
                 test_str=''.join(['%s,' %(j) for j in test_case])[:-1]
                 query = 'SELECT COUNT(*) FROM ' + \
