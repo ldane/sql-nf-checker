@@ -78,8 +78,8 @@ def check_1nf(my_table, my_cursor):
 	execute_statement(my_cursor, statement)
 	result_data = my_cursor.fetchall()
 	# testing return from query
-	for row in result_data:
-		print(row)
+	#for row in result_data:
+		#print(row)
 	for row in result_data:
 		if row[0] > 1:
 			string_reason = 'DUPLICATE KEY in ' + keys_clause
@@ -168,12 +168,12 @@ def main():
 			print_row(temp_table.table_name, normal_forms, reason)
 
 	#dataset = 'Employees'
-	#stm = 
-	#cur.execute(stm)
-	#execute_statement(cur, stm)
+	stm = 'SELECT * FROM Employees'
+	cur.execute(stm)
+	execute_statement(cur, stm)
 
-	#for row in cur.iterate():
-		#print(row[0])
+	for row in cur.iterate():
+		print(row)
 		
 	#return_data = cur.fetchall()
 	#print return_data[0]
