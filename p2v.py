@@ -82,7 +82,7 @@ def check_1nf(my_table, my_cursor):
 		print(row)
 	for row in result_data:
 		if row[0] > 1:
-			string_reason 'DUPLICATE KEY in ' + keys_clause
+			string_reason = 'DUPLICATE KEY in ' + keys_clause
 			return False, string_reason
 	return True, ''
 
