@@ -46,7 +46,7 @@ class Table:
         #return true if all names valid table/column names
         #returns false if table breaks some standard format
         for i in [self.table_name] + self.key_list + self.nonkey_list:
-            if not _string_check(i):
+            if not self._string_check(i):
                 return False
         return True
 
