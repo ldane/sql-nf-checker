@@ -217,7 +217,10 @@ def check_bcnf(my_table, my_cursor):
 
 def execute_statement(my_cursor, my_statement, my_formatted_statement):
     # executes sql statement and writes to file
-    my_cursor.execute(my_statement)
+    try:
+        my_cursor.execute(my_statement)
+    except Exception as e:
+        print(e)
 
     # before writing to file, separate the statement's WHERE JOIN GROUP clause.
     #statement1 = my_statement.replace('WHERE', '\n\tWHERE')
