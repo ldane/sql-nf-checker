@@ -213,7 +213,7 @@ def print_row(my_table_name, nf_boolean_list, my_reason):
     failed = ''
     
     #check length of reason is < 200
-    truncated_reason = (my_reason[:200] + '...') if len(my_reason) > 200 else my_reason
+    truncated_reason = (my_reason[:20] + '...') if len(my_reason) > 20 else my_reason
         
     if nf_boolean_list[0] == False:
         failed = '1NF'
