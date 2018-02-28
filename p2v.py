@@ -78,7 +78,10 @@ def check_1nf(my_table, my_cursor):
         statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + ' WHERE ' + key + ' IS NULL'
         formatted_statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + '\nWHERE ' + key + ' IS NULL'
         execute_statement(my_cursor, statement, formatted_statement)
-        result_data = my_cursor.fetchall()
+        try:
+            result_data = my_cursor.fetchall()
+        except Exception as e:
+            print(e)
         #testing return from query
         #for row in result_data:
             #print(row)
