@@ -185,7 +185,7 @@ def check_bcnf(my_table, my_cursor):
         result_data = my_cursor.fetchall()
         if result_data[0][0] != 0:
             rest.append(s)
-    if not rest:
+    if rest:
         return False, str(rest)
 
     return True, ''
