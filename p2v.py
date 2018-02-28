@@ -245,7 +245,7 @@ def main():
         return
     # python call should be 'python p2v.py database=something.txt'
     descriptor, db_file_name = sys.argv[1].split('=')
-    lines = [line.rstrip('\n') for line in open(db_file_name)]
+    lines = [line.rstrip(['\r','\n']) for line in open(db_file_name)]
 
     # connect to database
     connection = vertica_python.connect(**conn_info)
