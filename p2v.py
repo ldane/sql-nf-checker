@@ -143,10 +143,11 @@ def check_3nf(my_table, my_cursor):
         for i in range(1,n+1):
             for test_case in combinations(targetkeys, i):
                 test_str=''.join(['%s,' %(j) for j in test_case])[:-1]
+                keys = [nonkey]+ list(test_case)
                 query = 'SELECT COUNT(*) FROM ' + \
                         '(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, nonkey) + \
                         'as c FROM %s ' %(my_table.table_name) + \
-                        'WHERE %s is NOT NULL ' %(nonkey) + \
+                        'WHERE ' + ' AND '.join([k+' IS NOT NULL' for k in keys]) + \
                         'GROUP BY %s) as t ' %(test_str) + \
                         'WHERE c!=1;'
                 execute_statement(my_cursor, query)
