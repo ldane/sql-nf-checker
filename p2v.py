@@ -202,16 +202,16 @@ def check_bcnf2(my_table, my_cursor):
             for test_case in combinations(my_table.nonkey_list, i):
                 test_str=''.join(['%s,' %(j) for j in test_case])[:-1]
                 query = 'SELECT COUNT(*) FROM ' + \
-                        '(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, nonkey) + \
+                        '(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, key) + \
                         'as c FROM %s ' %(my_table.table_name) + \
-                        'WHERE %s is NOT NULL ' %(nonkey) + \
+                        'WHERE %s is NOT NULL ' %(key) + \
                         'GROUP BY %s) as t ' %(test_str) + \
                         'WHERE c!=1;'
                 execute_statement(my_cursor, query)
                 result_data = my_cursor.fetchall()
                 if result_data[0][0] == 0:
                     result=False
-                    reason.append('%s->%s' %(test_str, nonkey))
+                    reason.append('%s->%s' %(test_str, key))
     if result:
         reason=''
     else:
