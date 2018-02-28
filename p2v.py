@@ -277,9 +277,8 @@ def main():
     # grab input from command line argument
     # only 1 argument allowed
     if len(sys.argv) != 2:
-        print('Invalid input - "python p2v.py database=something.txt"')
+        print('Invalid input - follow format "python p2v.py database=something.txt"')
         return
-    # python call should be 'python p2v.py database=something.txt'
     descriptor, db_file_name = sys.argv[1].split('=')
     lines = [line.rstrip('\r\n') for line in open(db_file_name)]
 
@@ -302,7 +301,8 @@ def main():
             #table names are valid, now check normal form
             normal_forms, reason = check_nf(temp_table, cur)
             print_row(temp_table.table_name, normal_forms, reason)
-
+        else: 
+            print('A table was found to be invalid, continuing..')
     #dataset = 'Employees'
     #stm = 'SELECT * FROM Employees'
     #cur.execute(stm)
