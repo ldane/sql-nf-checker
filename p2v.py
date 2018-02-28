@@ -251,7 +251,7 @@ def print_row(my_table_name, nf_boolean_list, my_reason):
     print(finalized_reason)
     # write to file NF.txt
     with open ('NF.txt', 'a') as f_txt:
-        f_txt.write(finalized_reason)
+        f_txt.write(finalized_reason + '\n')
 
 def main():
     # file login.ini contains host, username, password, and db name
@@ -288,7 +288,7 @@ def main():
 
     print('#Table\t\tFailed\t\tReason')
     with open ('NF.txt', 'a') as f_txt:
-        f_txt.write('#Table\t\tFailed\t\tReason')
+        f_txt.write('#Table\t\tFailed\t\tReason\n')
     
 
     # from the schema, evaluate each line into the table class which forms a key and non key list
