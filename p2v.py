@@ -224,9 +224,9 @@ def print_row(my_table_name, nf_boolean_list, my_reason):
     elif nf_boolean_list[3] == False:
         failed = 'BCNF'
     if (len(my_table_name) < 8):
-        print(my_table_name + '\t\t' + failed + '\t\t' + my_reason)
+        print(my_table_name + '\t\t' + failed + '\t\t' + truncated_reason)
     else:
-        print(my_table_name + '\t' + failed + '\t\t' + my_reason)
+        print(my_table_name + '\t' + failed + '\t\t' + truncated_reason)
 
 def main():
     # file login.ini contains host, username, password, and db name
