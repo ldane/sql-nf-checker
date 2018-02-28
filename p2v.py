@@ -244,9 +244,14 @@ def print_row(my_table_name, nf_boolean_list, my_reason):
     elif nf_boolean_list[3] == False:
         failed = 'BCNF'
     if (len(my_table_name) < 8):
-        print(my_table_name + '\t\t' + failed + '\t\t' + truncated_reason)
+        finalized_reason = my_table_name + '\t\t' + failed + '\t\t' + truncated_reason
     else:
-        print(my_table_name + '\t' + failed + '\t\t' + truncated_reason)
+        finalized_reason = my_table_name + '\t' + failed + '\t\t' + truncated_reason
+    
+    print(finalized_reason)
+    # write to file NF.txt
+    with open ('NF.txt', 'a') as f_txt:
+        f_txt.write(finalized_reason)
 
 def main():
     # file login.ini contains host, username, password, and db name
@@ -267,6 +272,7 @@ def main():
 
     # clear the log files
     open ('NF.sql', 'w').close()
+    open ('NF.txt', 'w').close()
 
     # grab input from command line argument
     # only 1 argument allowed
@@ -281,6 +287,9 @@ def main():
     cur = connection.cursor()
 
     print('#Table\t\tFailed\t\tReason')
+    with open ('NF.txt', 'a') as f_txt:
+        f_txt.write('#Table\t\tFailed\t\tReason')
+    
 
     # from the schema, evaluate each line into the table class which forms a key and non key list
     for line in lines:
