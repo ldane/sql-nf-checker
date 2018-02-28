@@ -172,6 +172,7 @@ def execute_statement(my_cursor, my_statement):
     statement1 = my_statement.replace('WHERE', '\n\tWHERE')
     statement2 = statement1.replace('GROUP', '\n\tGROUP')
     statement3 = statement2.replace('INNER JOIN', '\n\tINNER JOIN')
+    statement4 = statement3.replace('(SELECT', '\n\t(SELECT')
 
     with open ('NF.sql', 'a') as f_sql:
         f_sql.write(statement3 + '\n\n')
