@@ -129,9 +129,9 @@ def check_2nf(my_table, my_cursor):
                 formatted_query = 'SELECT COUNT(*) FROM ' + \
                                   '\n\t(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, nonkey) + \
                                   'as c FROM %s ' %(my_table.table_name) + \
-                                  '\n\tWHERE %s is NOT NULL ' %(nonkey) + \
-                                  '\n\tGROUP BY %s) as t ' %(test_str) + \
-                                  '\tWHERE c!=1;'
+                                  '\n\t\tWHERE %s is NOT NULL ' %(nonkey) + \
+                                  '\n\t\tGROUP BY %s) as t ' %(test_str) + \
+                                  '\n\tWHERE c!=1;'
                 execute_statement(my_cursor, query, formatted_query)
                 result_data = my_cursor.fetchall()
                 if result_data[0][0] == 0:
@@ -163,11 +163,11 @@ def check_3nf(my_table, my_cursor):
                         ' GROUP BY %s) as t ' %(test_str) + \
                         'WHERE c!=1;'
                 formatted_query = 'SELECT COUNT(*) FROM ' + \
-                                  '(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, nonkey) + \
+                                  '\n\t(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, nonkey) + \
                                   'as c FROM %s ' %(my_table.table_name) + \
-                                  'WHERE ' + ' AND '.join([k+' IS NOT NULL' for k in keys]) + \
-                                  ' GROUP BY %s) as t ' %(test_str) + \
-                                  'WHERE c!=1;'
+                                  '\n\t\tWHERE ' + ' AND '.join([k+' IS NOT NULL' for k in keys]) + \
+                                  '\n\t\tGROUP BY %s) as t ' %(test_str) + \
+                                  '\n\tWHERE c!=1;'
                 execute_statement(my_cursor, query, formatted_query)
                 result_data = my_cursor.fetchall()
                 if result_data[0][0] == 0:
@@ -199,11 +199,11 @@ def check_bcnf(my_table, my_cursor):
                         'GROUP BY %s) as t ' %(test_str) + \
                         'WHERE c!=1;'
                 formatted_query = 'SELECT COUNT(*) FROM ' + \
-                                  '(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, key) + \
+                                  '\n\t(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, key) + \
                                   'as c FROM %s ' %(my_table.table_name) + \
-                                  'WHERE %s is NOT NULL ' %(key) + \
-                                  'GROUP BY %s) as t ' %(test_str) + \
-                                  'WHERE c!=1;'
+                                  '\n\t\tWHERE %s is NOT NULL ' %(key) + \
+                                  '\n\t\tGROUP BY %s) as t ' %(test_str) + \
+                                  '\n\tWHERE c!=1;'
                 execute_statement(my_cursor, query, formatted_query)
                 result_data = my_cursor.fetchall()
                 if result_data[0][0] == 0:
