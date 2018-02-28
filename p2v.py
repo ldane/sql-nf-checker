@@ -333,7 +333,7 @@ def main():
             normal_forms, reason, table_failure = check_nf(temp_table, cur)
             print_row(temp_table.table_name, normal_forms, reason, table_failure)
         else: 
-            print('Invalid table was found. ' + line)
+            print('Invalid table was found. \t' + line)
     #dataset = 'Employees'
     #stm = 'SELECT * FROM Employees'
     #cur.execute(stm)
