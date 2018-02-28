@@ -82,8 +82,8 @@ def check_1nf(my_table, my_cursor):
             result_data = my_cursor.fetchall()
         except Exception as e:
             # need to catch specific exceptions for useful error output
-            print('\t' + e)
-            return False, 'Invalid table columns'
+            print(e)
+            return False, 'Invalid table columns or SQL query'
         #testing return from query
         #for row in result_data:
             #print(row)
