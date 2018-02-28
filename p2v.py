@@ -277,6 +277,7 @@ def main():
     # grab input from command line argument
     # only 1 argument allowed
     if len(sys.argv) != 2:
+        print('Invalid input - "python p2v.py database=something.txt"')
         return
     # python call should be 'python p2v.py database=something.txt'
     descriptor, db_file_name = sys.argv[1].split('=')
