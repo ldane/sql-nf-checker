@@ -54,18 +54,18 @@ def check_nf(my_table, my_cursor):
     #returns a list of booleans representing normal form checks and a string describing the reason for failure, and a boolean describing table failure
     #[1nf, 2nf, 3nf, bcnf], 'reason'
     #check if all table columns are valid
+    is_1nf, is_2nf, is_3nf, is_bcnf = False, False, False, False
     statement = 'SELECT * FROM ' + my_table.table_name
     execute_statement(my_cursor, statement, statement)
     try:
         column_list = [desc.name for desc in my_cursor.description]
     except Exception as e:
         print(e)
-        return False, 'Invalid table columns or SQL query', True
+        return [is_1nf, is_2nf, is_3nf, is_bcnf], 'Invalid table columns', True
     for attribute in my_table.key_list + my_table.nonkey_list:
         if attribute not in column_list:
-            return False, 'Invalid table columns', True
+            return [is_1nf, is_2nf, is_3nf, is_bcnf], 'Invalid table columns', True
     
-    is_1nf, is_2nf, is_3nf, is_bcnf = False, False, False, False
     reason = ''
     is_1nf, reason = check_1nf(my_table, my_cursor)
     if is_1nf:
@@ -257,7 +257,7 @@ def execute_statement(my_cursor, my_statement, my_formatted_statement):
     with open ('NF.sql', 'a') as f_sql:
         f_sql.write(my_formatted_statement + '\n\n')
 
-def print_row(my_table_name, nf_boolean_list, my_reason, table_failure):
+def print_row(my_table_name, nf_boolean_list, my_reason, table_failure = False):
     #first print table name, then print which NF fails if any, if there is a failure then the myReason string is not empty
     failed = ''
     
