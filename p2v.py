@@ -163,6 +163,13 @@ def check_3nf(my_table, my_cursor):
 
 def check_bcnf(my_table, my_cursor):
     #returns boolean, string
+    keys = my_table.key_list + my_table.nonkey_list
+    n = len(keys)
+    superset = []
+    for i in range(n+1):
+        for c in combinations(keys,i):
+            superset.append(c)
+    print superset
     return False, ''
 
 def execute_statement(my_cursor, my_statement):
