@@ -82,7 +82,7 @@ def check_1nf(my_table, my_cursor):
             result_data = my_cursor.fetchall()
         except Exception as e:
             print(e)
-            return
+            return False, 'Invalid table'
         #testing return from query
         #for row in result_data:
             #print(row)
