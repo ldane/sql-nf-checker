@@ -58,12 +58,12 @@ def check_nf(my_table, my_cursor):
     statement = 'SELECT * FROM ' + my_table.table_name
     execute_statement(my_cursor, statement, statement)
     try:
-        column_list = [desc.name for desc in my_cursor.description]
+        column_list = [desc.name.lower() for desc in my_cursor.description]
     except Exception as e:
         print(e)
         return [is_1nf, is_2nf, is_3nf, is_bcnf], 'Invalid table columns', True
     for attribute in my_table.key_list + my_table.nonkey_list:
-        if attribute not in column_list:
+        if attribute.lower() not in column_list:
             return [is_1nf, is_2nf, is_3nf, is_bcnf], 'table column in query do not match table: ' + attribute, True
     
     reason = ''
