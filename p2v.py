@@ -330,8 +330,8 @@ def main():
         temp_table = Table(line)
         if (temp_table.check_name_validity()):
             #table names are valid, now check normal form
-            normal_forms, reason = check_nf(temp_table, cur)
-            print_row(temp_table.table_name, normal_forms, reason)
+            normal_forms, reason, table_failure = check_nf(temp_table, cur)
+            print_row(temp_table.table_name, normal_forms, reason, table_failure)
         else: 
             print('Invalid table was found. ' + line)
     #dataset = 'Employees'
