@@ -76,7 +76,7 @@ def check_1nf(my_table, my_cursor):
         return False, 'NO PK'
     for key in my_table.key_list:
         statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + ' WHERE ' + key + ' IS NULL'
-        formatted_statement = 'SELECT COUNT(*) FROM ' + my_table_name + '\n\tWHERE ' + key + ' IS NULL'
+        formatted_statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + '\n\tWHERE ' + key + ' IS NULL'
         execute_statement(my_cursor, statement, formatted_statement)
         result_data = my_cursor.fetchall()
         #testing return from query
