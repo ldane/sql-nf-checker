@@ -170,7 +170,7 @@ def check_bcnf(my_table, my_cursor):
     n = len(keys)
     superset = []
     rest = []
-    for i in range(1,n+1):
+    for i in range(2,n+1):
         for c in combinations(keys,i):
             superset.append(c)
     for s in superset:
@@ -183,11 +183,12 @@ def check_bcnf(my_table, my_cursor):
                 'WHERE c!=1;'
         execute_statement(my_cursor, query)
         result_data = my_cursor.fetchall()
-        if result_data[0][0] == 0:
+        if result_data[0][0] != 0:
             rest.append(s)
-    print rest
+    if not rest:
+        return False, str(rest)
 
-    return False, ''
+    return True, ''
 
 def execute_statement(my_cursor, my_statement):
     # executes sql statement and writes to file
