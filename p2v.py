@@ -255,6 +255,9 @@ def main():
 
     # from the schema, evaluate each line into the table class which forms a key and non key list
     for line in lines:
+        # If there is empty line continue
+        if not line:
+            continue
         temp_table = Table(line)
         if (temp_table.check_name_validity()):
             #table names are valid, now check normal form
