@@ -81,7 +81,8 @@ def check_1nf(my_table, my_cursor):
         try:
             result_data = my_cursor.fetchall()
         except Exception as e:
-            print(e_part1)
+            # need to catch specific exceptions for useful error output
+            print(e)
             return False, 'Invalid table'
         #testing return from query
         #for row in result_data:
