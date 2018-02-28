@@ -83,7 +83,7 @@ def check_1nf(my_table, my_cursor):
         except Exception as e:
             # need to catch specific exceptions for useful error output
             print(e)
-            return False, 'Invalid table'
+            return False, 'Invalid table columns'
         #testing return from query
         #for row in result_data:
             #print(row)
