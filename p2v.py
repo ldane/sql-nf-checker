@@ -263,8 +263,10 @@ def print_row(my_table_name, nf_boolean_list, my_reason, table_failure = False):
     
     #check length of reason is < 200
     truncated_reason = (my_reason[:200] + '...') if len(my_reason) > 200 else my_reason
-        
-    if nf_boolean_list[0] == False:
+    
+    if table_failure == True:
+        failed = '---'
+    elif nf_boolean_list[0] == False:
         failed = '1NF'
     elif nf_boolean_list[1] == False:
         failed = '2NF'
@@ -272,8 +274,6 @@ def print_row(my_table_name, nf_boolean_list, my_reason, table_failure = False):
         failed = '3NF'
     elif nf_boolean_list[3] == False:
         failed = 'BCNF'
-    elif table_failure == True:
-        failed = '---'
     if (len(my_table_name) < 8):
         finalized_reason = my_table_name + '\t\t' + failed + '\t\t' + truncated_reason
     else:
