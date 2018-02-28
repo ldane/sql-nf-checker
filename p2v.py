@@ -167,6 +167,7 @@ def check_bcnf(my_table, my_cursor):
     keys = my_table.key_list + my_table.nonkey_list
     n = len(keys)
     superset = []
+    rest = []
     for i in range(1,n+1):
         for c in combinations(keys,i):
             superset.append(c)
@@ -181,8 +182,8 @@ def check_bcnf(my_table, my_cursor):
         execute_statement(my_cursor, query)
         result_data = my_cursor.fetchall()
         if result_data[0][0] == 0:
-            superset.remove(s)
-    print superset
+            rest.append(s)
+    print rest
 
     return False, ''
 
