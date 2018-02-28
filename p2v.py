@@ -170,6 +170,9 @@ def check_bcnf(my_table, my_cursor):
     from itertools import combinations
     result = True
     reason = []
+    m = len(my_table.key_list)
+    if m == 1:
+        return True, ''
     n = len(my_table.nonkey_list)
     for key in my_table.key_list:
         for i in range(1,3):
