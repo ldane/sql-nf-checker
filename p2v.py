@@ -257,7 +257,7 @@ def execute_statement(my_cursor, my_statement, my_formatted_statement):
     with open ('NF.sql', 'a') as f_sql:
         f_sql.write(my_formatted_statement + '\n\n')
 
-def print_row(my_table_name, nf_boolean_list, my_reason, table_failure = False):
+def print_row(my_table_name, nf_boolean_list, my_reason, table_failure):
     #first print table name, then print which NF fails if any, if there is a failure then the myReason string is not empty
     failed = ''
     
