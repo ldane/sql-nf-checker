@@ -148,7 +148,7 @@ def check_3nf(my_table, my_cursor):
                         '(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, nonkey) + \
                         'as c FROM %s ' %(my_table.table_name) + \
                         'WHERE ' + ' AND '.join([k+' IS NOT NULL' for k in keys]) + \
-                        'GROUP BY %s) as t ' %(test_str) + \
+                        ' GROUP BY %s) as t ' %(test_str) + \
                         'WHERE c!=1;'
                 execute_statement(my_cursor, query)
                 result_data = my_cursor.fetchall()
