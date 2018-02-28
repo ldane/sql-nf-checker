@@ -35,7 +35,7 @@ class Table:
 
     def _string_check(self, target):
         import string
-        charset = string.ascii_letters+'_'
+        charset = string.ascii_letters+'0123456789_'
         for c in set(target):
             if c not in charset:
                 return False
