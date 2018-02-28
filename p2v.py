@@ -173,9 +173,10 @@ def execute_statement(my_cursor, my_statement):
     statement1 = my_statement.replace('WHERE', '\n\tWHERE')
     statement2 = statement1.replace('GROUP', '\n\tGROUP')
     statement3 = statement2.replace('INNER JOIN', '\n\tINNER JOIN')
+    statement4 = statement3.replace('(SELECT', '\n\t(SELECT')
 
     with open ('NF.sql', 'a') as f_sql:
-        f_sql.write(statement3 + '\n\n')
+        f_sql.write(statement4 + '\n\n')
 
 def print_row(my_table_name, nf_boolean_list, my_reason):
     #first print table name, then print which NF fails if any, if there is a failure then the myReason string is not empty
