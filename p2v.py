@@ -51,7 +51,7 @@ class Table:
         return True
 
 def check_nf(my_table, my_cursor):
-    #returns a list of booleans representing normal form checks and a string describing the reason for failure
+    #returns a list of booleans representing normal form checks and a string describing the reason for failure, and a boolean describing table failure
     #[1nf, 2nf, 3nf, bcnf], 'reason'
     #check if all table columns are valid
     statement = 'SELECT * FROM ' + my_table.table_name
@@ -75,7 +75,7 @@ def check_nf(my_table, my_cursor):
             if is_3nf:
                 is_bcnf, reason = check_bcnf(my_table, my_cursor)
     #testing
-    return [is_1nf, is_2nf, is_3nf, is_bcnf], reason
+    return [is_1nf, is_2nf, is_3nf, is_bcnf], reason, False
 
 def check_1nf(my_table, my_cursor):
     # returns True, '' if passes 1NF check
