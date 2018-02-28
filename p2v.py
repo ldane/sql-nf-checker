@@ -82,7 +82,7 @@ def check_1nf(my_table, my_cursor):
             result_data = my_cursor.fetchall()
         except Exception as e:
             # need to catch specific exceptions for useful error output
-            print(e)
+            print('\t' + e)
             return False, 'Invalid table columns'
         #testing return from query
         #for row in result_data:
@@ -310,7 +310,7 @@ def main():
             normal_forms, reason = check_nf(temp_table, cur)
             print_row(temp_table.table_name, normal_forms, reason)
         else: 
-            print('A table was found to be invalid, continuing..')
+            print('Invalid table was found.', [False, False, False, False], line)
     #dataset = 'Employees'
     #stm = 'SELECT * FROM Employees'
     #cur.execute(stm)
