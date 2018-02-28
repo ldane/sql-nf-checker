@@ -64,7 +64,7 @@ def check_nf(my_table, my_cursor):
         return [is_1nf, is_2nf, is_3nf, is_bcnf], 'Invalid table columns', True
     for attribute in my_table.key_list + my_table.nonkey_list:
         if attribute not in column_list:
-            return [is_1nf, is_2nf, is_3nf, is_bcnf], 'Invalid table columns in given schema: ' + ''.join(['%s,' %(j) for j in my_table.key_list + my_table.nonkey_list]) + ' | Found: ' + ''.join(['%s,' %(j) for j in column_list]), True
+            return [is_1nf, is_2nf, is_3nf, is_bcnf], 'table columns in query do not match table: ' + ''.join(['%s,' %(j) for j in my_table.key_list + my_table.nonkey_list]), True
     
     reason = ''
     is_1nf, reason = check_1nf(my_table, my_cursor)
