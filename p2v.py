@@ -76,7 +76,8 @@ def check_1nf(my_table, my_cursor):
         return False, 'NO PK'
     for key in my_table.key_list:
         statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + ' WHERE ' + key + ' IS NULL'
-        execute_statement(my_cursor, statement)
+        formatted_statement = 'SELECT COUNT(*) FROM ' + my_table_name + '\n\tWHERE ' + key + ' IS NULL'
+        execute_statement(my_cursor, statement, formatted_statement)
         result_data = my_cursor.fetchall()
         #testing return from query
         #for row in result_data:
@@ -93,7 +94,8 @@ def check_1nf(my_table, my_cursor):
             keys_clause += ', '
         keys_clause += key
     statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + ' GROUP BY ' + keys_clause
-    execute_statement(my_cursor, statement)
+    formatted_statement = 'SELECT COUNT(*) FROM ' + my_table.table_name + '\n\tGROUP BY ' + keys_clause
+    execute_statement(my_cursor, statement, formatted_statement)
     result_data = my_cursor.fetchall()
     # testing return from query
     #for row in result_data:
@@ -124,7 +126,13 @@ def check_2nf(my_table, my_cursor):
                         'WHERE %s is NOT NULL ' %(nonkey) + \
                         'GROUP BY %s) as t ' %(test_str) + \
                         'WHERE c!=1;'
-                execute_statement(my_cursor, query)
+                formatted_query = 'SELECT COUNT(*) FROM ' + \
+                                  '\n\t(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, nonkey) + \
+                                  'as c FROM %s ' %(my_table.table_name) + \
+                                  '\n\tWHERE %s is NOT NULL ' %(nonkey) + \
+                                  '\n\tGROUP BY %s) as t ' %(test_str) + \
+                                  '\tWHERE c!=1;'
+                execute_statement(my_cursor, query, formatted_query)
                 result_data = my_cursor.fetchall()
                 if result_data[0][0] == 0:
                     result=False
@@ -154,7 +162,13 @@ def check_3nf(my_table, my_cursor):
                         'WHERE ' + ' AND '.join([k+' IS NOT NULL' for k in keys]) + \
                         ' GROUP BY %s) as t ' %(test_str) + \
                         'WHERE c!=1;'
-                execute_statement(my_cursor, query)
+                formatted_query = 'SELECT COUNT(*) FROM ' + \
+                                  '(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, nonkey) + \
+                                  'as c FROM %s ' %(my_table.table_name) + \
+                                  'WHERE ' + ' AND '.join([k+' IS NOT NULL' for k in keys]) + \
+                                  ' GROUP BY %s) as t ' %(test_str) + \
+                                  'WHERE c!=1;'
+                execute_statement(my_cursor, query, formatted_query)
                 result_data = my_cursor.fetchall()
                 if result_data[0][0] == 0:
                     result=False
@@ -184,7 +198,13 @@ def check_bcnf(my_table, my_cursor):
                         'WHERE %s is NOT NULL ' %(key) + \
                         'GROUP BY %s) as t ' %(test_str) + \
                         'WHERE c!=1;'
-                execute_statement(my_cursor, query)
+                formatted_query = 'SELECT COUNT(*) FROM ' + \
+                                  '(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, key) + \
+                                  'as c FROM %s ' %(my_table.table_name) + \
+                                  'WHERE %s is NOT NULL ' %(key) + \
+                                  'GROUP BY %s) as t ' %(test_str) + \
+                                  'WHERE c!=1;'
+                execute_statement(my_cursor, query, formatted_query)
                 result_data = my_cursor.fetchall()
                 if result_data[0][0] == 0:
                     result=False
@@ -195,18 +215,18 @@ def check_bcnf(my_table, my_cursor):
         reason = ', '.join(reason)
     return result, reason
 
-def execute_statement(my_cursor, my_statement):
+def execute_statement(my_cursor, my_statement, my_formatted_statement):
     # executes sql statement and writes to file
     my_cursor.execute(my_statement)
 
     # before writing to file, separate the statement's WHERE JOIN GROUP clause.
-    statement1 = my_statement.replace('WHERE', '\n\tWHERE')
-    statement2 = statement1.replace('GROUP', '\n\tGROUP')
-    statement3 = statement2.replace('INNER JOIN', '\n\tINNER JOIN')
-    statement4 = statement3.replace('(SELECT', '\n\t(SELECT')
+    #statement1 = my_statement.replace('WHERE', '\n\tWHERE')
+    #statement2 = statement1.replace('GROUP', '\n\tGROUP')
+    #statement3 = statement2.replace('INNER JOIN', '\n\tINNER JOIN')
+    #statement4 = statement3.replace('(SELECT', '\n\t(SELECT')
 
     with open ('NF.sql', 'a') as f_sql:
-        f_sql.write(statement4 + '\n\n')
+        f_sql.write(my_formatted_statement + '\n\n')
 
 def print_row(my_table_name, nf_boolean_list, my_reason):
     #first print table name, then print which NF fails if any, if there is a failure then the myReason string is not empty
