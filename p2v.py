@@ -138,9 +138,9 @@ def check_3nf(my_table, my_cursor):
     from itertools import combinations
     result = True
     reason = []
-    targetkeys = list(my_table.nonkey_list)
-    while targetkeys:
-        nonkey = targetkeys.pop(0)
+    for nonkey in my_table.nonkey_list:
+        targetkeys = list(my_table.nonkey_list)
+        targetkeys.remove(nonkey)
         n = len(targetkeys)
         for i in range(1,n+1):
             for test_case in combinations(targetkeys, i):
