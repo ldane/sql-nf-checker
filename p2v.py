@@ -170,7 +170,20 @@ def check_bcnf(my_table, my_cursor):
     for i in range(1,n+1):
         for c in combinations(keys,i):
             superset.append(c)
+    for s in superset:
+        test_str=''.join(['%s,' %(k) for k in s])[:-1]
+        query = 'SELECT COUNT(*) FROM ' + \
+                '(SELECT COUNT(*) as c ' + \
+                'FROM %s ' %(my_table.table_name) + \
+                'WHERE ' + ' AND '.join([k+' IS NOT NULL' for k in s]) + \
+                ' GROUP BY %s) as t ' %(test_str) + \
+                'WHERE c!=1;'
+        execute_statement(my_cursor, query)
+        result_data = my_cursor.fetchall()
+        if result_data[0][0] == 0:
+            superset.remove(s)
     print superset
+
     return False, ''
 
 def execute_statement(my_cursor, my_statement):
