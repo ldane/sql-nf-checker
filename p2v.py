@@ -62,8 +62,7 @@ def check_nf(my_table, my_cursor):
         if is_2nf:
             is_3nf, reason = check_3nf(my_table, my_cursor)
             if is_3nf:
-                #bcnf and bcnf2 are two test functions for checking bcnf, change as needed 
-                is_bcnf, reason = check_bcnf2(my_table, my_cursor)
+                is_bcnf, reason = check_bcnf(my_table, my_cursor)
     #testing
     return [is_1nf, is_2nf, is_3nf, is_bcnf], reason
 
@@ -165,35 +164,8 @@ def check_3nf(my_table, my_cursor):
     else:
         reason = ','.join(reason)
     return result, reason
-
+ 
 def check_bcnf(my_table, my_cursor):
-    #returns boolean, string
-    from itertools import combinations
-    keys = my_table.key_list + my_table.nonkey_list
-    n = len(keys)
-    superset = []
-    rest = []
-    for i in range(2,n+1):
-        for c in combinations(keys,i):
-            superset.append(c)
-    for s in superset:
-        test_str=''.join(['%s,' %(k) for k in s])[:-1]
-        query = 'SELECT COUNT(*) FROM ' + \
-                '(SELECT COUNT(*) as c ' + \
-                'FROM %s ' %(my_table.table_name) + \
-                'WHERE ' + ' AND '.join([k+' IS NOT NULL' for k in s]) + \
-                ' GROUP BY %s) as t ' %(test_str) + \
-                'WHERE c!=1;'
-        execute_statement(my_cursor, query)
-        result_data = my_cursor.fetchall()
-        if result_data[0][0] != 0:
-            rest.append(s)
-    if rest:
-        return False, str(rest)
-
-    return True, ''
-    
-def check_bcnf2(my_table, my_cursor):
     #returns boolean, string
     from itertools import combinations
     result = True
