@@ -113,6 +113,8 @@ def check_2nf(my_table, my_cursor):
     result = True
     reason = []
     n = len(my_table.key_list)
+    if n == 1:
+        return True, ''
     for nonkey in my_table.nonkey_list:
         for i in range(1,n):
             for test_case in combinations(my_table.key_list, i):
