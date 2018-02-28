@@ -138,7 +138,12 @@ def check_2nf(my_table, my_cursor):
                                   '\n\tGROUP BY %s) as t ' %(test_str) + \
                                   '\nWHERE c!=1;'
                 execute_statement(my_cursor, query, formatted_query)
-                result_data = my_cursor.fetchall()
+                try:
+                    result_data = my_cursor.fetchall()
+                except Exception as e:
+                    # need to catch specific exceptions for useful error output
+                    print(e)
+                    return False, 'Invalid table columns or SQL query'
                 if result_data[0][0] == 0:
                     result=False
                     reason.append('%s->%s' %(test_str, nonkey))
@@ -174,7 +179,12 @@ def check_3nf(my_table, my_cursor):
                                   '\n\tGROUP BY %s) as t ' %(test_str) + \
                                   '\nWHERE c!=1;'
                 execute_statement(my_cursor, query, formatted_query)
-                result_data = my_cursor.fetchall()
+                try:
+                    result_data = my_cursor.fetchall()
+                except Exception as e:
+                    # need to catch specific exceptions for useful error output
+                    print(e)
+                    return False, 'Invalid table columns or SQL query'
                 if result_data[0][0] == 0:
                     result=False
                     reason.append('%s->%s' %(test_str, nonkey))
