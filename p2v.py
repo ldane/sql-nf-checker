@@ -204,7 +204,7 @@ def check_3nf(my_table, my_cursor):
     if result:
         reason=''
     else:
-        reason = ','.join(reason)
+        reason = ', '.join(reason)
     return result, reason
  
 def check_bcnf(my_table, my_cursor):
