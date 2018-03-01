@@ -125,7 +125,8 @@ def check_1nf(my_table, my_cursor):
         return True, ''
 
 def check_2nf(my_table, my_cursor):
-    #returns boolean, string
+    # returns True, '' if passes 2NF check
+    # returns False, 'reason' if fails 2NF check, string will contain reason for failure ie 'k2->a' when k1, k2 make up the key
     from itertools import combinations
     result = True
     reason = []
@@ -145,8 +146,8 @@ def check_2nf(my_table, my_cursor):
                 formatted_query = 'SELECT COUNT(*) FROM ' + \
                                   '\n\t(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, nonkey) + \
                                   'as c FROM %s ' %(my_table.table_name) + \
-                                  '\n\tWHERE %s is NOT NULL ' %(nonkey) + \
-                                  '\n\tGROUP BY %s) as t ' %(test_str) + \
+                                  '\n\t WHERE %s is NOT NULL ' %(nonkey) + \
+                                  '\n\t GROUP BY %s) as t ' %(test_str) + \
                                   '\nWHERE c!=1;'
                 execute_statement(my_cursor, query, formatted_query)
                 try:
@@ -165,7 +166,8 @@ def check_2nf(my_table, my_cursor):
     return result, reason
 
 def check_3nf(my_table, my_cursor):
-    #returns boolean, string
+    # returns True, '' if passes 3NF check
+    # returns False, 'reason' if fails 3NF check, string will contain reason for failure ie 'a->b' where a and b are both non-keys
     from itertools import combinations
     result = True
     reason = []
@@ -186,14 +188,14 @@ def check_3nf(my_table, my_cursor):
                 formatted_query = 'SELECT COUNT(*) FROM ' + \
                                   '\n\t(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, nonkey) + \
                                   'as c FROM %s ' %(my_table.table_name) + \
-                                  '\n\tWHERE ' + ' AND '.join([k+' IS NOT NULL' for k in keys]) + \
-                                  '\n\tGROUP BY %s) as t ' %(test_str) + \
+                                  '\n\t WHERE ' + ' AND '.join([k+' IS NOT NULL' for k in keys]) + \
+                                  '\n\t GROUP BY %s) as t ' %(test_str) + \
                                   '\nWHERE c!=1;'
                 execute_statement(my_cursor, query, formatted_query)
                 try:
                     result_data = my_cursor.fetchall()
                 except Exception as e:
-                    # need to catch specific exceptions for useful error output
+                    # need to catch exceptions for useful error output
                     print(e)
                     return False, 'Invalid table columns or SQL query'
                 if result_data[0][0] == 0:
@@ -206,7 +208,8 @@ def check_3nf(my_table, my_cursor):
     return result, reason
  
 def check_bcnf(my_table, my_cursor):
-    #returns boolean, string
+    # returns True, '' if passes BCNF check
+    # returns False, 'reason' if fails BCNF check, string will contain reason for failure ie 'a->k1' when the table is already 3NF
     from itertools import combinations
     result = True
     reason = []
@@ -227,8 +230,8 @@ def check_bcnf(my_table, my_cursor):
                 formatted_query = 'SELECT COUNT(*) FROM ' + \
                                   '\n\t(SELECT %s, COUNT(DISTINCT %s) ' % (test_str, key) + \
                                   'as c FROM %s ' %(my_table.table_name) + \
-                                  '\n\tWHERE %s is NOT NULL ' %(key) + \
-                                  '\n\tGROUP BY %s) as t ' %(test_str) + \
+                                  '\n\t WHERE %s is NOT NULL ' %(key) + \
+                                  '\n\t GROUP BY %s) as t ' %(test_str) + \
                                   '\nWHERE c!=1;'
                 execute_statement(my_cursor, query, formatted_query)
                 result_data = my_cursor.fetchall()
@@ -242,23 +245,22 @@ def check_bcnf(my_table, my_cursor):
     return result, reason
 
 def execute_statement(my_cursor, my_statement, my_formatted_statement):
-    # executes sql statement and writes to file
+    # executes sql statement and writes to file NF.sql
     try:
         my_cursor.execute(my_statement)
     except Exception as e:
         print(e)
 
-    # before writing to file, separate the statement's WHERE JOIN GROUP clause.
-    #statement1 = my_statement.replace('WHERE', '\n\tWHERE')
-    #statement2 = statement1.replace('GROUP', '\n\tGROUP')
-    #statement3 = statement2.replace('INNER JOIN', '\n\tINNER JOIN')
-    #statement4 = statement3.replace('(SELECT', '\n\t(SELECT')
-
     with open ('NF.sql', 'a') as f_sql:
         f_sql.write(my_formatted_statement + '\n\n')
 
 def print_row(my_table_name, nf_boolean_list, my_reason, table_failure = False):
-    #first print table name, then print which NF fails if any, if there is a failure then the myReason string is not empty
+    # Outputs to console and NF.txt 
+    #
+    #
+    # #Table Failed Reason
+    # ~
+    # ~
     failed = ''
     
     #check length of reason is < 200
@@ -307,7 +309,7 @@ def main():
     open ('NF.txt', 'w').close()
 
     # grab input from command line argument
-    # only 1 argument allowed
+    # only 2 argument allowed
     if len(sys.argv) != 2:
         print('Invalid input - follow format "python p2v.py database=something.txt"')
         return
@@ -343,17 +345,6 @@ def main():
             # write to file NF.txt
             with open ('NF.txt', 'a') as f_txt:
                 f_txt.write('Invalid table was found. \t' + line + '\n')
-    #dataset = 'Employees'
-    #stm = 'SELECT * FROM Employees'
-    #cur.execute(stm)
-    #execute_statement(cur, stm)
-
-    #for row in cur.iterate():
-        #print(row)
-
-    #return_data = cur.fetchall()
-    #print return_data[0]
-    #print return_data[0][0]
 
 if __name__ == "__main__":
     main()
