@@ -64,7 +64,7 @@ def check_nf(my_table, my_cursor):
         return [is_1nf, is_2nf, is_3nf, is_bcnf], 'Invalid table columns', True
     for attribute in my_table.key_list + my_table.nonkey_list:
         if attribute.lower() not in column_list:
-            return [is_1nf, is_2nf, is_3nf, is_bcnf], 'table column in query do not match table: ' + attribute, True
+            return [is_1nf, is_2nf, is_3nf, is_bcnf], 'table column in query not found in table: ' + attribute, True
     
     reason = ''
     is_1nf, reason = check_1nf(my_table, my_cursor)
@@ -340,6 +340,9 @@ def main():
             print_row(temp_table.table_name, normal_forms, reason, table_failure)
         else: 
             print('Invalid table was found. \t' + line)
+            # write to file NF.txt
+            with open ('NF.txt', 'a') as f_txt:
+                f_txt.write('Invalid table was found. \t' + line + '\n')
     #dataset = 'Employees'
     #stm = 'SELECT * FROM Employees'
     #cur.execute(stm)
