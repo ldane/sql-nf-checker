@@ -175,7 +175,8 @@ def check_3nf(my_table, my_cursor):
         targetkeys = list(my_table.nonkey_list)
         targetkeys.remove(nonkey)
         n = len(targetkeys)
-        for i in range(1,n+1):
+        #limiting range of combinations to a maximum of 2 - [AB->C] "two maximum attributes on LHS"
+        for i in range(1,3):
             for test_case in combinations(targetkeys, i):
                 test_str=''.join(['%s,' %(j) for j in test_case])[:-1]
                 keys = [nonkey]+ list(test_case)
