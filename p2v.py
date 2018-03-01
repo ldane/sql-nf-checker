@@ -294,7 +294,7 @@ def main():
 
     #use 5433
     conn_info = {'host': host,
-                 'port': 543333,
+                 'port': 5433,
                  'user': username,
                  'password': password,
                  'database': database,
