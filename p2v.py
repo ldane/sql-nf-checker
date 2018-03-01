@@ -321,6 +321,7 @@ def main():
     except Exception as e:
         print(e)
         print('Failed to connect to database, check login.ini')
+        return
 
     print('#Table\t\tFailed\t\tReason')
     with open ('NF.txt', 'a') as f_txt:
