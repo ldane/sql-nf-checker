@@ -19,3 +19,5 @@ https://stackoverflow.com/questions/36924137/how-to-return-errors-from-pyodbc
 https://stackoverflow.com/questions/23681453/finding-a-relation-in-3nf-but-not-in-bcnf
 https://en.wikipedia.org/wiki/Boyce%E2%80%93Codd_normal_form
 https://github.com/craned/cosc6340-Project-1
+https://www.ischool.utexas.edu/~wyllys/DMPAMaterials/normstep.html
+https://www.1keydata.com/database-normalization/
