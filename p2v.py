@@ -282,10 +282,10 @@ def print_row(my_table_name, nf_boolean_list, my_reason, table_failure = False):
     else:
         finalized_reason = my_table_name + '\t' + failed + '\t\t' + truncated_reason
     
-    print(finalized_reason + '\n')
+    print(finalized_reason)
     # write to file NF.txt
     with open ('NF.txt', 'a') as f_txt:
-        f_txt.write(finalized_reason + '\n\n')
+        f_txt.write(finalized_reason + '\n')
 
 def main():
     # file login.ini contains host, username, password, and db name
@@ -328,7 +328,7 @@ def main():
 
     print('#Table\t\tFailed\t\tReason\n')
     with open ('NF.txt', 'a') as f_txt:
-        f_txt.write('#Table\t\tFailed\t\tReason\n\n')
+        f_txt.write('#Table\t\tFailed\t\tReason\n')
     
 
     # from the schema, evaluate each line into the table class which forms a key and non key list
@@ -342,10 +342,10 @@ def main():
             normal_forms, reason, table_failure = check_nf(temp_table, cur)
             print_row(temp_table.table_name, normal_forms, reason, table_failure)
         else: 
-            print('Invalid table was found. \t' + line + '\n')
+            print('Invalid table was found. \t' + line)
             # write to file NF.txt
             with open ('NF.txt', 'a') as f_txt:
-                f_txt.write('Invalid table was found. \t' + line + '\n\n')
+                f_txt.write('Invalid table was found. \t' + line + '\n')
 
 if __name__ == "__main__":
     main()
