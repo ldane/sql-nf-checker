@@ -292,8 +292,9 @@ def main():
         password = f.readline().strip()
         database = f.readline().strip()
 
+    #use 5433
     conn_info = {'host': host,
-                 'port': 5433,
+                 'port': 543333,
                  'user': username,
                  'password': password,
                  'database': database,
@@ -314,8 +315,12 @@ def main():
     lines = [line.rstrip('\r\n') for line in open(db_file_name)]
 
     # connect to database
-    connection = vertica_python.connect(**conn_info)
-    cur = connection.cursor()
+    try:
+        connection = vertica_python.connect(**conn_info)
+        cur = connection.cursor()
+    except Exception as e:
+        print(e)
+        print('Failed to connect to database, check login.ini')
 
     print('#Table\t\tFailed\t\tReason')
     with open ('NF.txt', 'a') as f_txt:
