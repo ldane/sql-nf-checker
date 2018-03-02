@@ -326,7 +326,7 @@ def main():
         print('Failed to connect to database, check login.ini')
         return
 
-    print('#Table\t\tFailed\t\tReason\n')
+    print('#Table\t\tFailed\t\tReason')
     with open ('NF.txt', 'a') as f_txt:
         f_txt.write('#Table\t\tFailed\t\tReason\n')
     
