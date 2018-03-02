@@ -5,9 +5,9 @@ A Python script to check of Normalization forms with SQL
 Example of valid python call: "python p2v.py database=input.txt"
 
 # Output
-Failed column lists which normal form check failed
+Failed column lists which normal form failed
 A blank space indicates passing normal form checks
-'---' indicates a more severe error such as failing to check the database at all
+'---' indicates a more severe error such as query failure
 
 # Links to helpful sites, referenced code, sourced code
 https://stackoverflow.com/questions/3277503/how-do-i-read-a-file-line-by-line-into-a-list
