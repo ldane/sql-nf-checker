@@ -346,6 +346,7 @@ def main():
             # write to file NF.txt
             with open ('NF.txt', 'a') as f_txt:
                 f_txt.write('Invalid table was found. \t' + line + '\n')
+    print('')
 
 if __name__ == "__main__":
     main()
